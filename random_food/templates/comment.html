@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <title>推薦你的食物</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/tag.css">
+        <link rel="stylesheet" href="/static/bootstrap.css">
+        <link rel="stylesheet" href="/static/bootstrap-theme.css">
+        <link rel="stylesheet" href="/static/cover.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src='/static/bootstrap.js'></script>
+        <style>
+          a, a:hover{
+            text-decoration: none;
+          }
+          label{
+            font-weight: 1px;
+            font-style: normal;
+            font-size:12px;
+          }
+        </style>
+    </head>
+    <body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand"></h3>
+              <ul class="nav masthead-nav">
+                <li class=""><a href="/">Home</a></li>
+                <li class="active"><a href="#" onclick='return false;'>推薦食物</a></li>
+                <li class=""><a href="/list">食物清單</a></li>
+              </ul>
+            </div>
+          </div>
+          <form action="/add" method="post">
+          <div class="inner cover">
+            <h1 class="cover-heading">Comment Your Food</h1>
+            <div style="width:50%; margin:auto;">
+                <p class="lead">
+                    <p>店名</p>
+                    <input type="text" name="name" class="form-control">
+                    <p>地址</p>
+                    <input type="text" name="addr" class="form-control">
+                    <p>簡介</p>
+                    <textarea name="content" id="" cols="30" rows="3" class="form-control" ></textarea>
+                    <p>標籤</p>
+                    <input type="hidden" name="tags" id="tags">
+                    <a href="#" class="tag tag-default" onclick="return false;">早餐</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">午餐</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">晚餐</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">宵夜</a>
+                    <br />
+                    <a href="#" class="tag tag-default" onclick="return false;">便宜</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">普通</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">稍貴</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">昂貴</a>
+                    </div>
+                    <a href="#" class="tag tag-default" onclick="return false;">難吃</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">可吃</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">好吃</a>
+                    <a href="#" class="tag tag-default" onclick="return false;">極品</a>
+                    </div>
+                </p>
+              <input type='submit' class="btn btn-lg btn-default" value="Submit It !">
+            </div>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script>
+      tags = document.getElementById('tags');
+      $("a").click(function(){
+        if($(this).hasClass("tag-default")){
+          $(this).removeClass("tag-default").addClass("tag-green");
+          tags.value += (tags.value == "")? "" : ",";
+          tags.value += $(this).text();
+        }else{
+          $(this).removeClass("tag-green").addClass("tag-default");
+          tags.value = tags.value.replace("," + $(this).text(), "");
+          tags.value = tags.value.replace($(this).text(), "");          
+        }
+      });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="title">
+        <div class="head" align="center" style="width: auto;">
+            <div class="circle" style="background: #{{ color }}">{{ img }}</div>
+            <div class="name">{{ nick }}</div>
+            <div style="clear: both;"></div>
+        </div>
+        {{ title }}
+    </div>
+    <div class="content" style="text-align: left;">
+        {% for l in content %}
+            {{ l }}<br/>
+        {% endfor %}
+        留言時間：{{ times }}
+    </div>
+</div>

@@ -1,0 +1,68 @@
+<html>
+    <head>
+        <title>食物清單</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/bootstrap.css">
+        <link rel="stylesheet" href="/static/bootstrap-theme.css">
+        <link rel="stylesheet" href="/static/cover.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src='/static/bootstrap.js'></script>
+    </head>
+    <style>
+        td{
+            padding: 5 5 5 5;
+        }
+    </style>
+    <body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner" style="padding-top:3%;">
+        <p class="lead" >
+            <table align='center' border='1' cellpadding='5' cellmargin='0' bordercolor="#DDD" width="80%">
+                <tr>
+                    <td align='center'>
+                        店名
+                    </td>
+                    <td align='center'>
+                        地址
+                    </td>
+                    <td align='center'>
+                        簡介
+                    </td>
+                    <td align='center' width='12%'>
+                        行為
+                    </td>
+                </tr>
+
+                {% for i in data %}
+                <tr>
+                    <td align='center'>
+                        <h3>{{ i.name }}</h3>
+                    </td>
+                    <td>
+                        {{ i.addr }}
+                    </td>
+                    <td>
+                        {{ i.content }}
+                    </td>
+                    <td style="color:#000">
+                        <center>
+                            <input type="button" value="刪除" onclick="send('{{ i._id }}', 'del')">
+                            {% if i.check == 0 %}
+                            <input type="button" value="通過" onclick="send('{{ i._id }}', 'modify')">
+                            {% endif %}
+                        </center>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </p>
+      </div>
+    </div>
+    </body>
+</html>
+<script>
+    function send(id, pass){
+        $.post("/" + pass , {id: id});
+    }
+</script>

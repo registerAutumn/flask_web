@@ -1,0 +1,146 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>決定食物的命運</title>
+        <link rel="stylesheet" href="/static/bootstrap.css">
+        <link rel="stylesheet" href="/static/bootstrap-theme.css">
+        <link rel="stylesheet" href="/static/cover.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src='/static/bootstrap.js'></script>
+    </head>
+    <style>
+        #slots::-webkit-scrollbar {  
+            width: 0px;  
+        }  
+        #slots{
+            width: 80%;
+            height: 100px;
+            margin: auto;
+            overflow-y: scroll;
+        }
+
+        #content{
+            width: 80%;
+            height: 200px;
+            margin: auto;
+            overflow-y: scroll;
+            color: #000;
+        }
+
+        li.option{
+            font-size:35px;
+            text-align: center;
+            line-height: 100px;
+            color: #000;
+            list-style-type: none;
+            position: relative;
+        }
+    </style>
+    <script>
+        document.getElementById("slot").scrollWidth = 0;
+    </script>
+    <body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand"></h3>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="#" onclick='return false;'>Home</a></li>
+                <li class=""><a href="/comment">推薦食物</a></li>
+                <li class=""><a href="/list">食物清單</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Select Your Food</h1>
+            <p class="lead">
+                <div id="slots" class="thumbnail">
+                    {% for d in data %}
+                    <li class="option" tag-data="{{d.addr}}">{{d.name}}</li>
+                    {% endfor %}
+                </div>
+            </p>
+            <p class="lead">
+                <div id='content' class='thumbnail'>
+                </div>
+            </p>
+            <p class="lead">
+              <a href="javascript:spin(Math.floor(Math.random()*3000+1000))" class="btn btn-lg btn-default">Let Slot !</a>
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    </body>
+    <script>
+        window.onmousewheel = document.onmousewheel = function(e) {
+
+            e = e || window.event;
+
+            if (e.preventDefault)
+
+                e.preventDefault();
+
+            e.returnValue = false;
+
+        };
+        var slots, len, index;
+        $("#content").toggle();
+        $(".option").eq(0).clone().appendTo($("#slots"));
+        len = $(".option").length * 100
+        slots = $("#slots")[0];
+        function spin(n){
+            $("p.lead > a").attr("disabled", "disabled");
+            $("#content").toggle(false);
+            var i;
+            for(i=0;i<n; i++){
+                setTimeout(function() {
+                    if(slots.scrollTop>=(len-100)){
+                        slots.scrollTop = 0;
+                    }else{
+                        slots.scrollTop += Math.random()*5+1;
+                    }
+                }, i*2);
+            }
+            setTimeout(function(){
+                pos = slots.scrollTop;
+                var t;
+                if(Math.ceil(pos/100)*100 - pos < 30){
+                    for(t = 0; t< (Math.ceil(pos/100)*100 - pos); t++){
+                        setTimeout(function(){slots.scrollTop += 1;},t*8);
+                    }
+                }else{
+                    for(t = 0; t< (pos - Math.floor(pos/100)*100); t++){
+                        setTimeout(function(){slots.scrollTop -= 1;},t*8);
+                    }
+                }
+                setTimeout(function(){
+                    console.log(slots.scrollTop/100);
+                    index = $(".option").eq(slots.scrollTop/100);
+                    console.log(index);
+                    $.post("/getContent", {"name": $(index).text()}, function(success){
+                        $("#content").html(success);
+                        $("#content").toggle();
+                        $("p.lead > a").removeAttr("disabled")
+                    })
+                }, t*8);
+            }, i*2);
+        }
+        function re () {
+            $(".option").eq(0).clone().appendTo($("#slots"));
+            $(".option").eq(0).remove();
+            option = $(".option");
+            for (var i = 0; i < option.length; i++) {
+                $(option[i]).css("top", "0px");
+            };
+        }
+    </script>
+</html>

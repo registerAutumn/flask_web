@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+{%block title%}ＭＥＭＢＥＲ{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="/static/css/member.css">
+    <div class="login">
+        <form action="/member/" method="post">
+            <input type="text" name='user' class="information" placeholder="帳號/學號">
+            <input type="password" name='pass' class="information" placeholder="密碼">
+            <button class="submit">登入</button>
+        </form>
+        {% if message %}
+        <div class="message {{ type }}">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

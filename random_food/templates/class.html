@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>各系專業學程整理</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="static/bootstrap.js"></script>
+        <link rel="stylesheet" href="static/bootstrap.css">
+        <link rel="stylesheet" href="static/bootstrap-theme.css">
+    </head>
+    <style>
+        ul>li{
+            font-size:15px;
+            font-family: "微軟正黑體";
+        }
+    </style>
+    <body>
+        <nav class="navbar navbar-default" role="navigation">
+          <div class="container-fluid">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                {% for n in data %}
+                    <li class=""><a href="#" onclick="return false;" tags="{{ data[n] }}">{{ n }}系</a></li>
+                {% endfor %}
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+        </nav>
+        <div class="site-wrapper">
+            <div class="site-wrapper-inner">
+                <div class="cover-container">
+                </div>
+            </div>
+        </div>
+        <div id="iframe" style="width:100%; position:fixed; top:52px;">
+            <iframe src="static/main.html" frameborder="0" width="100%" height="100%" id="show"></iframe>
+        </div>
+    </body>
+    <script>
+        $("#iframe").css('height', $(document).height()-52 + "px");
+        $("a").click(function(){
+            $("li").removeClass("active");
+            $(this).parent().addClass("active");
+            document.getElementById("show").src = $(this).attr("tags");
+        });
+    </script>
+</html>

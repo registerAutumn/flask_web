@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>食物清單</title>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/static/bootstrap.css">
+        <link rel="stylesheet" href="/static/bootstrap-theme.css">
+        <link rel="stylesheet" href="/static/cover.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src='/static/bootstrap.js'></script>
+    </head>
+    </head>
+    <body>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand"></h3>
+              <ul class="nav masthead-nav">
+                <li class=""><a href="/">Home</a></li>
+                <li class=""><a href="/comment">推薦食物</a></li>
+                <li class="active"><a href="#" onclick='return false;'>食物清單</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="inner cover">
+            <h1 class="cover-heading">List Food</h1>
+            <div style="width:50%; margin:auto;">
+                <p class="lead" >
+                    <table align='center' border='1' cellpadding='5' cellmargin='0' bordercolor="#DDD">
+                        {% for i in data %}
+                        <tr>
+                            <td align='center'>
+                            <h2 style="cursor: pointer; color:#999;">{{ i.name }}</h2>
+                            <div style="width:100%; text-align:left; padding: 20px;">
+                                <p style="margin: auto;">地址：{{ i.addr }}</p>
+                                <p></p>
+                                <p></p>
+                                <p>{{ i.content }}</p>
+                            </div>
+                            </td>
+                        </tr>
+                        {% endfor %}                                
+                    </table>
+                </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </body>
+    <script>
+        var i = $("h2")
+        for(n=0;n<i.length;n++){
+            $(i[n]).next().toggle();
+        }
+        $("h2").click(function(){
+            for(n=0;n<i.length;n++){
+                $(i[n]).next().toggle(false);
+            }
+            $(this).next().slideToggle();
+        });
+    </script>
+</html>

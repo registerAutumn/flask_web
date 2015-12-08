@@ -1,0 +1,11 @@
+<div style="width: 50%; height: auto; margin: auto; margin-top: 5%; text-align:center;">
+    <input type="text" id="nick" class="information" placeholder="暱稱">
+    <input type="text" id="title" class="information" placeholder="主旨">
+    <textarea  class="information" id="content" cols="30" rows="6" placeholder="內容"></textarea>
+    <button class="leave">留言</button>
+</div>
+<script>
+    $(".leave").click(function(){
+        $.post("/leave_msg", {"nick": $("#nick").val(), "title": $("#title").val(), "content": $("#content").val()});
+    })
+</script>
