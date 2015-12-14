@@ -24,9 +24,21 @@ for f in files:
 
 session_pool = {}
 timeout      = 3600
+
+allow_list = ["/", "/status", "/login"]
+
+@app.before_request
+def checkLogin():
+    if not 'username' in session and not request.path in allow_list:
+        return ""
+    if 'username' in session:
+        obj = session_pool[session['username']]
+        if obj['timeout'] <= time.time() and obj['staus']:
+            obj['timeout'] += timeout
+
 @app.route("/")
 def index():
-    return "Hello World"
+    return "Hello"
 
 @app.route("/status")
 def getStatus():
@@ -57,6 +69,21 @@ def isLogin():
     except:
         return json.dumps(False)
 
+@app.route("/score", methods=['POST'])
+def get_score():
+    user = session_pool[session['username']]
+    try:
+        sms = request.form['sms']
+    except:
+        sms = "104,1"
+    result = ap.score(user['ap'], sms)
+    return result
+
+@app.route("/class_room", methods=['POST'])
+def get_class_room():
+    user = session_pool[session['username']]
+    return ap.classroom(user['ap'])
+
 @app.route("/bus_list", methods=['POST'])
 def bus_list():
     user = session_pool[session['username']]
@@ -68,19 +95,6 @@ def bus_list():
     result = eval("bus.query(%s, %s)" % ("user['bus']", ",".join(date)))
     return json.dumps(result)
 
-@app.route("/leave_list", methods=['POST'])
-def leave_list():
-    user = session_pool[session['username']]
-    try:
-        sms = request.form['sms'].split("-")
-    except KeyError:
-        sms = time.strftime("%Y-%m").split("-")
-        sms[0] = str(int(sms[0]) - 1911)
-        sms[1] =  str(int(math.ceil(float(sms[1]) / 6.0)))
-    print user['leave']
-    print "leave.getList(%s, %s)" % ("user['leave']", ",".join(sms))
-    result = eval("leave.getList(%s, %s)" % ("user['leave']", ",".join(sms)))
-    return json.dumps(result)
 
 def make_obj(user, word, uuid):
     obj = {
